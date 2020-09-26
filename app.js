@@ -1,27 +1,29 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 // Import routes
-const userRoutes = require('./routes/user');
+const userRoutes = require("./routes/user");
 
 // App
 const app = express();
 
-dotenv.config()
+dotenv.config();
 
 // Connect to DB
-mongoose.connect(process.env.MONGO_URI,
-  {useNewUrlParser: true,
+mongoose.connect(
+  process.env.MONGO_URI,
+  {
+    useNewUrlParser: true,
     useFindAndModify: false,
     useCreateIndex: true,
     useUnifiedTopology: true,
   },
-  () => console.log('connected to DB!'));
+  () => console.log("connected to DB!")
+);
 
-mongoose.connection.on('error',
-err => {
-  console.log(`DB connection error: ${err.message}`)
+mongoose.connection.on("error", (err) => {
+  console.log(`DB connection error: ${err.message}`);
 });
 
 // Routes middleware
