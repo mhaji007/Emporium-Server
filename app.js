@@ -1,5 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+// For saving users credentials in cookies
+const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 
 // Import routes
@@ -25,6 +29,11 @@ mongoose.connect(
 mongoose.connection.on("error", (err) => {
   console.log(`DB connection error: ${err.message}`);
 });
+
+// Middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 // Routes middleware
 app.use("/api", userRoutes);
