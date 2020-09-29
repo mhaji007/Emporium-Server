@@ -21,6 +21,7 @@ dotenv.config();
 
 // Import routes
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 
 // App
 const app = express();
@@ -50,6 +51,7 @@ app.use(expressValidator());
 
 // Routes middleware
 app.use("/api", authRoutes);
+app.use("/api", userRoutes);
 
 // Connect Server
 const port = process.env.PORT || 8000;
