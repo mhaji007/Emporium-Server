@@ -1,23 +1,27 @@
 exports.userSignupValidator = (req, res, next) => {
-  req.check('name', 'Name is required').notEmpty()
-  req.check('email', 'Email must be between 3 to 32 characters')
+  req.check("name", "Name is required").notEmpty();
+  req
+    .check("email", "Email must be between 3 to 32 characters")
     // .matches(/.+\@.+\..+/)
-    .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-    .withMessage('Invalid Email address format')
+    .matches(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    )
+    .withMessage("Invalid Email address format")
     .isLength({
-      min:4,
-      max:32
+      min: 4,
+      max: 32,
     });
-    req.check('password' , 'Passowrd is required').notEmpty()
-    req.check('password')
-    .isLength({min:6})
-    .withMessage('Password must contain at least 6 characters')
+  req.check("password", "Passowrd is required").notEmpty();
+  req
+    .check("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must contain at least 6 characters")
     .matches(/\d/)
-    .withMessage('Password must contain a number');
-     const errors = req. validationErrors();
-     if(errors) {
-       const firstError = errors.map(error => error.msg)[0];
-       return res.status(400).json({error: firstError});
-     }
-     next();
-}
+    .withMessage("Password must contain a number");
+  const errors = req.validationErrors();
+  if (errors) {
+    const firstError = errors.map((error) => error.msg)[0];
+    return res.status(400).json({ error: firstError });
+  }
+  next();
+};
