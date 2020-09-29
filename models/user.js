@@ -18,16 +18,24 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    // Virtual fields are used here
+    // we take the passowrd as input from
+    // the client side but we save the
+    // hashed version
     hashed_password: {
       type: String,
       required: true,
     },
+    // Information about user
+    // used when implementing user update
     about: {
       type: String,
       trim: true,
     },
+    // Used for generating the hashed password
     salt: String,
-    //   // 0 -> user | 1 -> admin
+    // 0 -> user | 1 -> admin
+    // By default users get a role of no-privilege user
     role: {
       type: Number,
       default: 0,
@@ -41,7 +49,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// virtual field
+// Virtual field implementation
+
+// We can add virtual fields and
+// methods to userSchema in Mongoose
 userSchema
   .virtual("password")
   .set(function (password) {

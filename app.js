@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 // For saving users credentials in cookies
 const cookieParser = require("cookie-parser");
+const expressValidator = require('express-validator');
 const dotenv = require("dotenv");
 
 // Import routes
@@ -34,6 +35,7 @@ mongoose.connection.on("error", (err) => {
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(expressValidator());
 
 // Routes middleware
 app.use("/api", userRoutes);
