@@ -3,6 +3,7 @@ const User = require("../models/user");
 const jwt = require('jsonwebtoken');
 // Used for authorization check
 const expressJwt = require('express-jwt');
+
 const{errorHandler} = require("../helpers/dbErrorHandler");
 
 //==== Signup ====//
@@ -68,5 +69,14 @@ exports.signout = (req, res) => {
   // Clear cookie from response
   res.clearCookie("t");
   res.json({message:"You have successfully signed out"});
-  
+
 }
+
+//==== authentication middleware ====//
+
+exports.requireSignin = expressJwt({
+  	  secret: process.env.JWT_SECRET,
+  	  algorithms: ["HS256"], // added later
+  	  userProperty: "auth",
+  	});
+

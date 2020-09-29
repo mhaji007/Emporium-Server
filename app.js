@@ -1,11 +1,23 @@
 const express = require("express");
+// Used for interaction with the database
 const mongoose = require("mongoose");
+// Used for printing http requests to the console
 const morgan = require("morgan");
+
 const bodyParser = require("body-parser");
-// For saving users credentials in cookies
+
+// Used for saving users credentials in cookies
 const cookieParser = require("cookie-parser");
+
+// Used for validating user input
+// (i.e., name, email and password)
 const expressValidator = require('express-validator');
+
+// Import environment variables
+// dontenv.confige() should come
+// before importing the routes
 const dotenv = require("dotenv");
+dotenv.config();
 
 // Import routes
 const userRoutes = require("./routes/user");
@@ -13,7 +25,6 @@ const userRoutes = require("./routes/user");
 // App
 const app = express();
 
-dotenv.config();
 
 // Connect to DB
 mongoose.connect(
