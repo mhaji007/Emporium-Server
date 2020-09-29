@@ -3,8 +3,9 @@ const User = require("../models/user");
 const jwt = require('jsonwebtoken');
 // Used for authorization check
 const expressJwt = require('express-jwt');
-const{errorHandler} = require("../helpers/dbErrorHandler")
+const{errorHandler} = require("../helpers/dbErrorHandler");
 
+//==== Signup ====//
 exports.signup = (req, res) => {
   console.log("req.body", req.body);
 
@@ -28,6 +29,7 @@ exports.signup = (req, res) => {
   });
 };
 
+//==== Signin ====//
 
 exports.signin = (req, res) =>{
 
@@ -41,13 +43,13 @@ exports.signin = (req, res) =>{
     }
     // If user is found make sure the email and password match
     // Create authenticate method in user model
-    if(!users.authenticate(password)) {
+    if(!user.authenticate(password)) {
       return res.status(401).json({
         error: "Email and password do not match"
       })
     }
 
-    // Generate a signed token a sigend token with user id and secret
+    // Generate a signed token with user id and secret
     const token = jwt.sign({_id:user.id}, process.env.JWT_SECRET)
     // Persist the token as 't' in cookie with expiry date
     res.cookie('t', token, {expire:new Date() + 9999});
