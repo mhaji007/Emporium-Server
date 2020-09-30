@@ -100,7 +100,7 @@ exports.isAuth = (req, res, next) => {
 // Own and other's profile may only be accessed
 // if the user has admin role
 exports.isAdmin = (req, res, next) => {
-  if (req.profile.role === 1) {
+  if (req.profile.role === 0) {
     return res.status(403).json({
       error: "Admin only resource! Access denied"
     });
