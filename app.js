@@ -39,6 +39,7 @@ mongoose.connect(
   () => console.log("connected to DB!")
 );
 
+// Handle connection error
 mongoose.connection.on("error", (err) => {
   console.log(`DB connection error: ${err.message}`);
 });
@@ -53,7 +54,7 @@ app.use(expressValidator());
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 
-// Connect Server
+// Listening to Server on port
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
