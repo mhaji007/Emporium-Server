@@ -8,6 +8,7 @@ const Product = require("../models/product");
 // We need to send the form data
 // to handle image upload
 exports.create = (req, res) => {
+  console.log(req.body);
   // All form data is avaialabe in IncomingForm
   let form = new formidable.IncomingForm();
   form.keepEtensions = true;
@@ -15,11 +16,12 @@ exports.create = (req, res) => {
   // form.keepExtensions = false;
   form.parse(req, (err, fields, files) => {
     if (err) {
+      console.log(err);
       return res.status(400).json({
         error:'Image could not be uploaded'
       })
     }
-    // Use fileds in to create a product
+    // Use fields in to create a product
     let product= new Product(fields);
 
     if(files.photo){
@@ -29,7 +31,7 @@ exports.create = (req, res) => {
     product.save((err, result)=>{
       if (err) {
         return res.status(400).json({
-          error:errorHamdler(error)
+          error:errorHandler(error)
         });
       }
       res.json(result);
