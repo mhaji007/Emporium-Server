@@ -23,6 +23,7 @@ dotenv.config();
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const categoryRoutes = require("./routes/category");
+const productRoutes = require("./routes/product");
 
 // App
 const app = express();
@@ -47,7 +48,10 @@ mongoose.connection.on("error", (err) => {
 
 // Global middlewares (to be used on all routes)
 app.use(morgan('dev'));
+// Send JSON responses
 app.use(bodyParser.json());
+// // Parses urlencoded bodies
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(expressValidator());
 
@@ -55,6 +59,7 @@ app.use(expressValidator());
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 // Listening to Server on port
 const port = process.env.PORT || 8000;
