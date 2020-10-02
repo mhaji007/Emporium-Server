@@ -73,3 +73,19 @@ exports.create = (req, res) => {
     });
   });
 };
+
+exports.remove = (req, res) => {
+  let product = req.product;
+  product.remove((err, deletedProduct) => {
+    console.log(err);
+    if (err) {
+      return res.status(400).json({
+        error:errorHandler(err)
+      });
+    };
+    res.json({
+      // deletedProduct,
+      "message":"Product deleted successfully"
+    });
+  });
+};
