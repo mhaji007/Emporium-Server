@@ -31,6 +31,8 @@ exports.signup = (req, res) => {
   });
 };
 
+//=================//
+
 //==== Signin ====//
 
 exports.signin = (req, res) => {
@@ -59,6 +61,8 @@ exports.signin = (req, res) => {
     return res.json({ token, user: { _id, email, name, role } });
   });
 };
+
+//=================//
 
 //==== Signout====//
 
@@ -107,3 +111,5 @@ exports.isAdmin = (req, res, next) => {
   }
   next();
 };
+
+//=================//

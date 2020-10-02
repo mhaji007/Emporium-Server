@@ -1,6 +1,8 @@
 const Category = require("../models/category");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+//==== Create category ====//
+
 exports.create = (req, res) => {
   const category = new Category(req.body);
   category.save((err, data) => {

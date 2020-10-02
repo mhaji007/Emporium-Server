@@ -6,6 +6,12 @@ const fs = require('fs');
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+//==== find product by Id middleware ====//
+
+// Middleware that makes product available
+// on the req object used by GET, DELETE, and
+// POST routes
+
 exports.productById = (req, res, next, id) => {
   Product.findById(id).exec((err, product)=>{
     if(err || !product) {
@@ -18,11 +24,18 @@ exports.productById = (req, res, next, id) => {
   });
 };
 
+//=========================//
+
+//==== Read (find) product ====//
 
 exports.read = (req, res) => {
   req.product.photo = undefined;
   return res.json(req.product);
 }
+
+//============================//
+
+//==== Create product ====//
 
 // We need to send the form data
 // to handle image upload
@@ -74,6 +87,10 @@ exports.create = (req, res) => {
   });
 };
 
+//=========================//
+
+//==== Remove product ====//
+
 exports.remove = (req, res) => {
   let product = req.product;
   product.remove((err, deletedProduct) => {
@@ -89,6 +106,10 @@ exports.remove = (req, res) => {
     });
   });
 };
+
+//=========================//
+
+//==== Update product ====//
 
 exports.update = (req, res) => {
   // console.log(req.body);
@@ -138,3 +159,5 @@ exports.update = (req, res) => {
     });
   });
 };
+
+//=========================//

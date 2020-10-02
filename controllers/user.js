@@ -1,5 +1,7 @@
 const User = require("../models/user");
 
+//==== find user by Id middleware ====//
+
 // Find user by Id
 // Id is passed by the route parameter
 // Helpful for when user is logged in
