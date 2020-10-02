@@ -17,15 +17,30 @@ exports.create = (req, res) => {
   // form.keepExtensions = false;
   form.parse(req, (err, fields, files) => {
     if (err) {
-      console.log('UPLOAD ERROR ----->', err)
+      //console.log('UPLOAD ERROR ----->', err)
+      return res.status(400).json({
+        error:'All fields are required!'
+      })
+    }
+
+    // Check for all fields
+    const {name, description, price, category, quantity, shipping} = fields;
+
+    if(!name || !description || !price || !category || !quantity || !shipping) {
       return res.status(400).json({
         error:'Image could not be uploaded'
       })
+
     }
     // Use fields in to create a product
     let product= new Product(fields);
 
     if (files.photo){
+      if(files.photo.size > 1000000) {
+        return res.status(400).json({
+          error:'Image should be less than 1MB in size'
+        });
+      }
       product.photo.data = fs.readFileSync(files.photo.path);
       product.photo.contentType = files.photo.type;
     }

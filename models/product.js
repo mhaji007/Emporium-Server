@@ -32,6 +32,8 @@ const productSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
+        //Buffer type is usually used when working
+        // with items that get saved in binary form like images
         photo: {
             data: Buffer,
             contentType: String
