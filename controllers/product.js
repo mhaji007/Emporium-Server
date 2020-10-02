@@ -37,7 +37,7 @@ exports.create = (req, res) => {
     if (err) {
       //console.log('UPLOAD ERROR ----->', err)
       return res.status(400).json({
-        error:'All fields are required!'
+        error:'Image could not be uploaded'
       })
     }
 
@@ -46,7 +46,7 @@ exports.create = (req, res) => {
 
     if(!name || !description || !price || !category || !quantity || !shipping) {
       return res.status(400).json({
-        error:'Image could not be uploaded'
+        error:'All fields are required!'
       })
 
     }
@@ -86,6 +86,55 @@ exports.remove = (req, res) => {
     res.json({
       // deletedProduct,
       "message":"Product deleted successfully"
+    });
+  });
+};
+
+exports.update = (req, res) => {
+  // console.log(req.body);
+  // All form data is avaialabe in IncomingForm
+  let form = new formidable.IncomingForm();
+  form.keepEtensions = true;
+  // const form = new Formidable();
+  // form.keepExtensions = false;
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      //console.log('UPLOAD ERROR ----->', err)
+      return res.status(400).json({
+        error:'Image could not be uploaded'
+      })
+    }
+
+    // Check for all fields
+    const {name, description, price, category, quantity, shipping} = fields;
+
+    if(!name || !description || !price || !category || !quantity || !shipping) {
+      return res.status(400).json({
+        error:'All fields are required!'
+      })
+
+    }
+
+    let product= req.product;
+    product = _.extend(product, fields);
+
+    if (files.photo){
+      if(files.photo.size > 1000000) {
+        return res.status(400).json({
+          error:'Image should be less than 1MB in size'
+        });
+      }
+      product.photo.data = fs.readFileSync(files.photo.path);
+      product.photo.contentType = files.photo.type;
+    }
+    product.save((err, result)=>{
+      if (err) {
+        // console.log(err);
+        return res.status(400).json({
+          error:errorHandler(error)
+        });
+      }
+      res.json(result);
     });
   });
 };
