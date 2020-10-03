@@ -5,7 +5,7 @@ const { create, productById, remove, read, update } = require("../controllers/pr
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
 
-// CRUD ROUTES
+// CRUD routes
 router.get('/product/:productId', read)
 router.post("/product/create/:userId", requireSignin, isAuth, isAdmin, create);
 router.delete("/product/:productId/:userId", requireSignin, isAuth, isAdmin, remove);

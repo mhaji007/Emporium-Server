@@ -49,8 +49,8 @@ mongoose.connection.on("error", (err) => {
 // Global middlewares (to be used on all routes)
 app.use(morgan('dev'));
 // Send JSON responses
-app.use(bodyParser.json({ limit: "5mb", type: "application/json" }));
-// app.use(bodyParser.json());
+// app.use(bodyParser.json({ limit: "5mb", type: "application/json" }));
+app.use(bodyParser.json());
 // // Parses urlencoded bodies
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
