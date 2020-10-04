@@ -237,4 +237,21 @@ exports.listRelated = (req, res) => {
     });
 };
 
+
+//==== Return categories used in products =====//
+
+// Lists out all the product categoires
+// Returns all categories based on products
+
+exports.listCategories = (req, res) => {
+  Product.distinct('category', {}, (err, categories) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'Categories not found'
+      });
+    }
+    res.json(categories);
+  });
+};
+
 /*========================================*/
