@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 // Used for printing http requests to the console
 const morgan = require("morgan");
 
+const cors = require("cors");
+
 const bodyParser = require("body-parser");
 
 // Used for saving users credentials in cookies
@@ -55,6 +57,7 @@ app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(expressValidator());
+app.use(cors());
 
 // Routes middleware
 app.use("/api", authRoutes);
