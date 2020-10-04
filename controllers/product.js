@@ -161,3 +161,45 @@ exports.update = (req, res) => {
 };
 
 //=========================//
+
+//==== Return Product by sold/arrival ====//
+
+// by sell = /products?sortBy=sold&order=desc&limit=4
+// by arrival = /products?sortBy=createdAt&order=desc&limit=4
+// if no params are sent, then all products are returned
+
+exports.list = (req, res) => {
+  let order = req.query.order ? req.query.order : 'asc'
+  let sortBy = req.query.sortBy ? req.query.sortBy : '_id'
+  let limit = req.query.limit ? req.query.limit : 6
+
+  product.find()
+        // deselect photos
+        // because photos are saved
+        // in the form of binary data
+        // and saving them all
+        // requires a lot od space
+        // Therefore. photos are displayed via
+        // a separate fetch
+         .select("-photo")
+         // populate particular
+         // category related to
+         // product
+         .populate("category")
+         // sort by sortBy and order
+         .sort([[sortBy, order]])
+         .limit(limit)
+         .exec((err, products) => {
+           if(err) {
+             return res.status(400).json({
+               error: 'Products not found'
+             })
+           }
+           res.send(products);
+         })
+
+
+}
+
+//========================================//
+
