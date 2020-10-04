@@ -4,7 +4,7 @@ const router = express.Router();
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 
 
-const {userById} = require("../controllers/user");
+const {userById, read, update} = require("../controllers/user");
 
 // Test route
 // With this implementation once the user
@@ -14,6 +14,7 @@ router.get('/secret/:userId', requireSignin, (req, res) => {
   res.json({user: req.profile});
 });
 
+
 // Test route
 // With this implementation once the user
 // is logged in they cannot access (see) their own or any
@@ -22,6 +23,12 @@ router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
   res.json({user: req.profile});
 });
 
+// CRUD routes
+router.get('/user/:userId', requireSignin, isAuth, read);
+router.put('/user/:userId', requireSignin, isAuth, update);
+
+// Middlewares for routes in need
+// of userId and ProductId
 // If userId is encountered in the url
 // call the userById function in user controllers
 router.param("userId", userById);
