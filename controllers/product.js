@@ -311,4 +311,21 @@ exports.listBySearch = (req, res) => {
       });
 };
 
+//======================================//
+
+//==== Return photo =====//
+
+// Separate request from the client side
+// is sent to this endpoint to load the
+// images
+exports.photo = (req, res, next) => {
+  if (req.product.photo.data) {
+      res.set('Content-Type', req.product.photo.contentType);
+      return res.send(req.product.photo.data);
+  }
+  next();
+};
+
+//======================//
+
 /*========================================*/
