@@ -2,7 +2,7 @@
 const formidable = require("formidable");
 const _ = require("lodash");
 // Core module used in accessing file system
-const fs = require('fs');
+const fs = require("fs");
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
@@ -13,8 +13,8 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 // POST routes
 
 exports.productById = (req, res, next, id) => {
-  Product.findById(id).exec((err, product)=>{
-    if(err || !product) {
+  Product.findById(id).exec((err, product) => {
+    if (err || !product) {
       return res.status(400).json({
         error: "Product not found"
       });
@@ -31,7 +31,7 @@ exports.productById = (req, res, next, id) => {
 exports.read = (req, res) => {
   req.product.photo = undefined;
   return res.json(req.product);
-}
+};
 
 //============================//
 
@@ -50,36 +50,42 @@ exports.create = (req, res) => {
     if (err) {
       //console.log('UPLOAD ERROR ----->', err)
       return res.status(400).json({
-        error:'Image could not be uploaded'
-      })
+        error: "Image could not be uploaded"
+      });
     }
 
     // Check for all fields
-    const {name, description, price, category, quantity, shipping} = fields;
+    const { name, description, price, category, quantity, shipping } = fields;
 
-    if(!name || !description || !price || !category || !quantity || !shipping) {
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !quantity ||
+      !shipping
+    ) {
       return res.status(400).json({
-        error:'All fields are required!'
-      })
-
+        error: "All fields are required!"
+      });
     }
     // Use fields in to create a product
-    let product= new Product(fields);
+    let product = new Product(fields);
 
-    if (files.photo){
-      if(files.photo.size > 1000000) {
+    if (files.photo) {
+      if (files.photo.size > 1000000) {
         return res.status(400).json({
-          error:'Image should be less than 1MB in size'
+          error: "Image should be less than 1MB in size"
         });
       }
       product.photo.data = fs.readFileSync(files.photo.path);
       product.photo.contentType = files.photo.type;
     }
-    product.save((err, result)=>{
+    product.save((err, result) => {
       if (err) {
         // console.log(err);
         return res.status(400).json({
-          error:errorHandler(error)
+          error: errorHandler(error)
         });
       }
       res.json(result);
@@ -97,12 +103,12 @@ exports.remove = (req, res) => {
     console.log(err);
     if (err) {
       return res.status(400).json({
-        error:errorHandler(err)
+        error: errorHandler(err)
       });
-    };
+    }
     res.json({
       // deletedProduct,
-      "message":"Product deleted successfully"
+      message: "Product deleted successfully"
     });
   });
 };
@@ -122,37 +128,43 @@ exports.update = (req, res) => {
     if (err) {
       //console.log('UPLOAD ERROR ----->', err)
       return res.status(400).json({
-        error:'Image could not be uploaded'
-      })
+        error: "Image could not be uploaded"
+      });
     }
 
     // Check for all fields
-    const {name, description, price, category, quantity, shipping} = fields;
+    const { name, description, price, category, quantity, shipping } = fields;
 
-    if(!name || !description || !price || !category || !quantity || !shipping) {
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !quantity ||
+      !shipping
+    ) {
       return res.status(400).json({
-        error:'All fields are required!'
-      })
-
+        error: "All fields are required!"
+      });
     }
 
-    let product= req.product;
+    let product = req.product;
     product = _.extend(product, fields);
 
-    if (files.photo){
-      if(files.photo.size > 1000000) {
+    if (files.photo) {
+      if (files.photo.size > 1000000) {
         return res.status(400).json({
-          error:'Image should be less than 1MB in size'
+          error: "Image should be less than 1MB in size"
         });
       }
       product.photo.data = fs.readFileSync(files.photo.path);
       product.photo.contentType = files.photo.type;
     }
-    product.save((err, result)=>{
+    product.save((err, result) => {
       if (err) {
         // console.log(err);
         return res.status(400).json({
-          error:errorHandler(error)
+          error: errorHandler(error)
         });
       }
       res.json(result);
@@ -162,44 +174,67 @@ exports.update = (req, res) => {
 
 //=========================//
 
+/*=========== Controller methods ===========*/
+
 //==== Return Product by sold/arrival ====//
 
-// by sell = /products?sortBy=sold&order=desc&limit=4
+// by sold = /products?sortBy=sold&order=desc&limit=4
 // by arrival = /products?sortBy=createdAt&order=desc&limit=4
 // if no params are sent, then all products are returned
 
 exports.list = (req, res) => {
-  let order = req.query.order ? req.query.order : 'asc'
-  let sortBy = req.query.sortBy ? req.query.sortBy : '_id'
-  let limit = req.query.limit ? req.query.limit : 6
+  let order = req.query.order ? req.query.order : "asc";
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
-  product.find()
-        // deselect photos
-        // because photos are saved
-        // in the form of binary data
-        // and saving them all
-        // requires a lot od space
-        // Therefore. photos are displayed via
-        // a separate fetch
-         .select("-photo")
-         // populate particular
-         // category related to
-         // product
-         .populate("category")
-         // sort by sortBy and order
-         .sort([[sortBy, order]])
-         .limit(limit)
-         .exec((err, products) => {
-           if(err) {
-             return res.status(400).json({
-               error: 'Products not found'
-             })
-           }
-           res.send(products);
-         })
-
-
-}
+  Product.find()
+    // deselect photos
+    // because photos are saved
+    // in the form of binary data
+    // and saving them all
+    // requires a lot od space
+    // Therefore. photos are displayed via
+    // a separate fetch
+    .select("-photo")
+    // populate particular
+    // category related to
+    // product
+    .populate("category")
+    // sort by sortBy and in the order
+    // determined by order
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Products not found"
+        });
+      }
+      res.json(products);
+    });
+};
 
 //========================================//
 
+//==== Return similar products =====//
+
+// Find products based on req product
+// category. Other products with the same
+// category will be returned
+exports.listRelated = (req, res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+  Product.find({ _id: { $ne: req.product }, category: req.product.category })
+    .limit(limit)
+    .populate("category", "_id name")
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Products not found"
+        });
+      }
+      res.json(products);
+    });
+};
+
+/*========================================*/
