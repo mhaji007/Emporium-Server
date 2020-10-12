@@ -41,7 +41,7 @@ exports.signin = (req, res) => {
   User.findOne({ email }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        err: "No user found for this email. Please sign up."
+        error: "No user found for this email. Please sign up."
       });
     }
     // If user is found make sure the email and password match
@@ -71,6 +71,8 @@ exports.signout = (req, res) => {
   res.clearCookie("t");
   res.json({ message: "You have successfully signed out" });
 };
+
+//================//
 
 //==== Authentication middleware ====//
 

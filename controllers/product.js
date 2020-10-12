@@ -192,8 +192,8 @@ exports.list = (req, res) => {
     // because photos are saved
     // in the form of binary data
     // and saving them all
-    // requires a lot od space
-    // Therefore. photos are displayed via
+    // requires a lot of space.
+    // Therefore photos are displayed via
     // a separate fetch
     .select("-photo")
     // populate particular
