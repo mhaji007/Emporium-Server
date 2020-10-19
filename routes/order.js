@@ -8,7 +8,7 @@ const {create} = require("../controllers/order");
 
 router.post(
     "/order/create/:userId",
-    requireSignin
+    requireSignin, isAuth, create
 );
 
 router.param("userId", userById)
