@@ -35,8 +35,8 @@ const app = express();
 
 
 // Connect to DB
-mongoose.connect(
-  process.env.MONGO_URI,
+mongoose.connect( process.env.MONGODB_URI ||
+   process.env.MONGO_URI,
   {
     useNewUrlParser: true,
     useFindAndModify: false,
@@ -72,6 +72,7 @@ app.use('/api', orderRoutes);
 
 // Listening to Server on port
 const port = process.env.PORT || 8000;
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
